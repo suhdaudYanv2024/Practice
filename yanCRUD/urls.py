@@ -18,20 +18,17 @@ from django.contrib import admin
 from django.urls import path, include
 # import the urls from the mainCRUD app
 from mainCRUD import urls as main_urls
+from django.conf import settings
+from django.conf.urls.static import static
+
+# token authentication
+from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # include the urls from the mainCRUD app
     path('api/', include(main_urls)),
-]
-
-
-
-# from django.contrib import admin
-# from django.urls import path, include
-
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('api/', include('your_app_name.urls')),  # Replace 'your_app_name' with your app's name
-# ]
+    # token authentication
+    path('token-auth/', obtain_auth_token, name='api_token_auth'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
